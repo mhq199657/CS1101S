@@ -1,0 +1,96 @@
+% Taken from Lena Herrmann at 
+% http://lenaherrmann.net/2010/05/20/javascript-syntax-highlighting-in-the-latex-listings-package
+\documentclass{article}
+\usepackage{listings}
+\usepackage{color}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{lightgray},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+
+\begin{document}
+\title{CS1101S 10 Aug}
+\section{Goal:}
+\begin{enumerate}
+\item Learn Prgramming Methodology
+\item Learn how to program
+\item Glimpses into the subject areas of computer science
+\item Feeling how computer science ticks
+\item Fall in love with computer science.
+\end{enumerate}
+\section{Roadmap for CS1101S}
+\begin{figure}
+%\includegraphics{}
+\end{figure}
+\section{This year: Plan}
+Introducing the Source Academy
+\subsection{Flow}
+\begin{itemize}
+\item \texttt{Wednesday} lecture with path and textbook sections
+\item[] Textbook 1.1.1 - 1.1.4
+\item \texttt{Wednesday} recitation, hands-on material related to lecture(attendance taken)
+\item \texttt{Friday} lecture with path, tend to focus on \"special\" topics
+\item Monday/Tuesday discussion groups, in-depth material related to lecture
+\item Mission, side quests, contests
+\end{itemize}
+\subsection{Schedule}
+\begin{table}[h]
+\centering
+\label{my-label}
+\begin{tabular}{cc}
+\textbf{Event}   & \textbf{Date}        \\
+Midterm          & \texttt{28 Sep}    \\
+PE               & \texttt{10/11 Nov} \\
+Final assessment & \texttt{23 Nov}     \\
+Sumbot Contest   & \texttt{12 Oct}   
+\end{tabular}
+\end{table}
+\subsection{Source Academy - The Game}
+7 problem sets, containing 22 main missions\\
+Contests on graphics, acoustics, robotics, game development\\
+24-hour grading
+\subsection{Assessment}
+\begin{itemize}
+\item 35\% Missions
+\item 5\% Discussion Group Participation
+\item 15\% Midterm
+\item 15\% Practical Exam
+\item 30\% Final Assessment
+\end{itemize}
+The grade is not bell curved.\\
+S/U option is available.\\
+CS2020 requires at least $A^{-}$.
+\section{Recitation}
+\texttt{IDE} refers to Integrated Development Environment.
+
+\end{document}
