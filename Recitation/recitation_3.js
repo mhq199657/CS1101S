@@ -82,5 +82,5 @@ function iter_sum(term, a, next, b){
     {
         return index>b ? intermediate : helper(next(index),intermediate + term(index));
     }
-    return helper(1,0);
+    return helper(a,0);
 }
