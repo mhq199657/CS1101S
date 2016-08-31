@@ -45,6 +45,7 @@ function add_class(cl,schedule){
 function total_scheduled_units(sched){
 	if(is_empty_list(sched)){
 		return 0;
+	}
 	else{
 		return get_class_total_units(head(sched))+total_scheduled_units(tail(sched));
 	}
