@@ -26,7 +26,7 @@ function lookup(key,table){
 	function lookup2(key,table){
 		var this_entry = head(tail(table));
 		if(head(this_entry)===key){
-			return this_entry;
+			return tail(this_entry);
 		}else{
 			return lookup2(key,pair("table",tail(tail(table))));
 		}
@@ -34,7 +34,7 @@ function lookup(key,table){
 	if(has_key(key,table)){
 		var this_entry = head(tail(table));
 		if(head(this_entry)===key){
-			return this_entry;
+			return tail(this_entry);
 		}else{
 			return lookup2(key,pair("table",tail(tail(table))));
 		}
