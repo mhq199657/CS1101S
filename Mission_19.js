@@ -219,6 +219,12 @@ Fighter.prototype.__act = function(){
         return list_ref(lst,Math.floor(Math.random()*l));
     }
     var location = this.getLocation();
+        if(!equal(this.path.get_current_location(),undefined)&&is_empty_list(member(location,this.path.get_current_location().get_neighbours()))){
+        this.visited = [];
+        this.path = new Path();
+        this.has_keycard = false;
+        this.path_to_follow = [];
+    }else{;}
     function get_room_in_direction_within_range(dir,range){
         function helper(this_room,intermediate,remaining_range){
             if(remaining_range===-1){
@@ -267,12 +273,11 @@ Fighter.prototype.__act = function(){
             var list_of_drone = filter(function(occ){return is_instance_of(occ,SecurityDrone);},list_of_occupants_to_check);
              if(!is_empty_list(list_of_service_bot)){//and got service bot
                 this.use(weapon_at_disposal,list(random(list_of_service_bot)));//Attack
-            }else if(!is_empty_list(list_of_drones)){//and got security drones
+            }else if(!is_empty_list(list_of_drone)){//and got security drones
                 this.use(weapon_at_disposal,list(random(list_of_drone))); //Attack
             }else{;}//Got nothing
         }else{;}
         if(!is_empty_list(spell_weapons)){
-            alert(spell_weapons);
             var weapon_at_disposal2= head(spell_weapons);
             var max_range2 = weapon_at_disposal2.getRange(); 
             var north = get_room_in_direction_within_range("north",max_range2);
