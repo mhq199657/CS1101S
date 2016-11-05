@@ -8,38 +8,18 @@ function integer_from(n){
 var integers = integer_from(0);
 var cosine_series_task_5 = stream_map(function(x){
                                         if(x%2===0){
-                                            return (x%4===0?1:-1)*1/fact(x);
+                                            return ((x/2)%2===0?1:-1)*1/fact(x);
                                         }else{
                                             return 0;
                                         }},
                                         integers);
-function add_streams(s1, s2) {
-    if (is_empty_list(s1)) {
-        return s2;
-    } else if (is_empty_list(s2)) {
-        return s1;
-    } else {
-        return pair(head(s1) + head(s2),
-                    function() {
-                        return add_streams(stream_tail(s1),
-                                           stream_tail(s2)
-                                          );
-                    }
-                   );
-    }
-}
+
 function scale_stream(c, stream) {
     return stream_map(function(x){
                             return c * x;
                       },
                       stream);
 }
-var scale_series = scale_stream;
-function mul_series(s1,s2){
-    return pair(head(s1)*head(s2),function(){return add_streams(scale_series(head(s1),stream_tail(s2)),mul_series(stream_tail(s1),s2));});
-}
-
-
 //Task 1
 function stream_constant(n){
     return pair(n,function(){return stream_constant(n);});
@@ -60,7 +40,8 @@ function approximate(x0, series) {
     // Your answer here
     return stream_tail(fold_stream(function(x,y){return x+y;},mul_streams(series,gp_stream(x0)),0));
 }
-
+//Testing
+//eval_stream(approximate(Math.PI,cosine_series_task_5),15);
 
 //Task 2
 function greater_approximate(x0, stream_of_series) {
@@ -88,8 +69,9 @@ function greater_approximate(x0, stream_of_series) {
     },stream_of_series));
     }));
 }
-
-
+//Testing
+//var ap = pair(scale_stream(0.5,cosine_series_task_5),function(){return stream_map(function(x){return scale_stream(0.5,x);},ap);});
+//eval_stream(greater_approximate(Math.PI,ap),15);
 //Task 3
 function interleave(stream1, stream2) {
     if(is_empty_list(stream1)){
@@ -131,6 +113,26 @@ Go from top right to bottom left for each stroke
 3/1
 and for each number the negative one is after the positive ones
 */
+function member(x,xs){
+    if(is_empty_list(xs)){
+        return [];
+    }else if(equal(x,head(xs))){
+        return xs;
+    }else{
+        return member(x,tail(xs));
+    }
+}
+function remove_duplicate(lst){
+    if(is_empty_list(lst)){
+        return [];
+    }else{
+        if(is_empty_list(member(head(lst),tail(lst)))){
+            return pair(head(lst),remove_duplicate(tail(lst)));
+        }else{
+            return remove_duplicate(tail(lst));
+        }
+    }
+}
 //Task 4
 function stream_append_pickle(xs, ys) {
     if (is_empty_list(xs)) {
@@ -153,7 +155,17 @@ function generator(n){
             return append(list(list(x,y,z)),helper(x,y-1,z+1));
         }
     }
-    return stream_append_pickle(list_to_stream(helper(n,0,0)),function(){return generator(n+1);});
+    var ppp = helper(n,0,0); //All x,y,z nonnegative
+    var ppn = map(function(lst){return list(list_ref(lst,0),list_ref(lst,1),0-list_ref(lst,2));},ppp);//x,y nonnegative, z nonpositive
+    var pnp = map(function(lst){return list(list_ref(lst,0),0-list_ref(lst,1),list_ref(lst,2));},ppp);
+    var npp = map(function(lst){return list(0-list_ref(lst,0),list_ref(lst,1),list_ref(lst,2));},ppp);
+    var pnn = map(function(lst){return list(list_ref(lst,0),0-list_ref(lst,1),0-list_ref(lst,2));},ppp);
+    var npn = map(function(lst){return list(0-list_ref(lst,0),list_ref(lst,1),0-list_ref(lst,2));},ppp);
+    var nnp = map(function(lst){return list(0-list_ref(lst,0),0-list_ref(lst,1),list_ref(lst,2));},ppp);
+    var nnn = map(function(lst){return list(0-list_ref(lst,0),0-0-list_ref(lst,1),0-list_ref(lst,2));},ppp);
+    var t = remove_duplicate(append(append(append(append(append(append(append(ppp,ppn),pnp),npp),pnn),npn),nnp),nnn));
+    //display(t);
+    return stream_append_pickle(list_to_stream(t),function(){return generator(n+1);});
 }
 
 var all_coordinates = generator(0);
