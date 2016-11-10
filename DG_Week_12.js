@@ -1,4 +1,5 @@
-///////////////////////
+
++///////////////////////
 // lazy.ts
 ///////////////////////
 
@@ -499,6 +500,33 @@ function evaluate_while_statement(predicate,list_of_statements,env){
         return undefined;
     }
 }
+//For loop
+function is_for_loop(stmt){
+    return stmt.tag==="for";
+}
+function evaluate_for_loop(initialiser,predicate,finaliser,statements,env){
+    function loop(remaining_statements){
+        if(is_empty_list(remaining_statements)){
+            force(evaluate(finaliser,env));
+            if(force(evaluate(predicate,env))===true){
+                return evaluate_for_loop(undefined,predicate,finaliser,statements,env);
+            }else{
+                return undefined;
+            }
+        }else{
+            var h = head(remaining_statements);
+                force(evaluate(head(remaining_statements),env));
+                loop(tail(remaining_statements));
+        }
+    }
+    if(initialiser===undefined){
+        ;
+    }else{
+        force(evaluate(initialiser,env));
+    }
+    loop(statements);
+    return undefined;
+}
 /*
 *******************************************************************************
 The function apply takes two arguments, a function and a list of arguments
@@ -607,6 +635,8 @@ function evaluate(stmt, env) {
         return evaluate_boolean_operation(list_ref(stmt.operands,0),list_ref(stmt.operands,1),stmt.operator,env);
     }else if(is_while_statement(stmt)){
         return evaluate_while_statement(stmt.predicate,stmt.statements,env);
+    }else if(is_for_loop(stmt)){
+        return evaluate_for_loop(stmt.initialiser,stmt.predicate,stmt.finaliser,stmt.statements,env);
     }
     else {
         error("Unknown expression type -- evaluate: " + stmt);
