@@ -50,6 +50,7 @@ function remove_specified_element_from_tail(xs,i){
 
 
 
+
 function Coordinates(x,y){
 	this.x = x;
 	this.y = y;
@@ -60,56 +61,39 @@ Coordinates.prototype.get_x = function(){
 Coordinates.prototype.get_y = function(){
 	return this.y;
 }; 
-
 function Board(){
-	this.reachable = [];
-}
-function remove_duplicate(lst){
-    if(is_empty_list(lst)){
-        return [];
-    }else{
-        if(is_empty_list(member(head(lst),tail(lst)))){
-            return pair(head(lst),remove_duplicate(tail(lst)));
-        }else{
-            return remove_duplicate(tail(lst));
-        }
-    }
-}
-function equal_coordinate(c1,c2){
-    if(c1.x===c2.x&&c1.y===c2.y){
-        return true;
-    }else{
-        return false;
-    }
-}
-function equal(a,b){
-        return equal_coordinate(a,b);
-}
-function member(x,xs){
-    if(is_empty_list(xs)){
-        return [];
-    }else if(equal(head(xs),x)){
-        return xs;}
-        else{
-            return member(x,tail(xs));
-        }
+	this.reachable = [[false,false,false,false,false,false,false,false],
+	                  [false,false,false,false,false,false,false,false],
+	                  [false,false,false,false,false,false,false,false],
+	                  [false,false,false,false,false,false,false,false],
+	                  [false,false,false,false,false,false,false,false],
+	                  [false,false,false,false,false,false,false,false],
+	                  [false,false,false,false,false,false,false,false],
+	                  [false,false,false,false,false,false,false,false]
+	];
 }
 Board.prototype.get_reachables = function(){
-	return this.reachable;
+    var list_of_reachables = [];
+    for(var i = 0; i<8; i=i+1){
+        for(var j = 0; j<8; j=j+1){
+            if(this.reachable[i][j]){
+                list_of_reachables = pair(new Coordinates(i,j),list_of_reachables);
+            }else{
+                ;
+            }
+        }
+    }
+    return list_of_reachables;
 };
-Board.prototype.set_reachable=function(c){
-	var cx = c.get_x();
-	var cy = c.get_y();
-	if(cx<8&&cx>-1&&cy<8&&cy>-1){
-		if(is_empty_list(member(c,this.reachable))){
-			this.reachable = pair(c,this.reachable);
-		}else{;}
-	}else
-	{
-		;
-	}
-}; 
-Board.prototype.set_reachable_by_knight_at = function(c){
+Board.prototype.set_reachable = function(c){
+    var i = c.get_x();
+    var j = c.get_y();
+    if(i<8&&i>-1&&j<8&&j>-1){
+        this.reachable[i][j]=true;
+    }else{;}
+    return undefined;
+};
+Board.prototype.set_reachables_by_knight_at = function(c){
 	var cx = c.get_x();
 	var cy = c.get_y();
 	this.set_reachable(new Coordinates(cx+1,cy+2));
@@ -126,9 +110,9 @@ function knight(c,n){
     var b = new Board();
 	function helper(c,n,b){
 	if(n===0){
-		return c;
+	    b.set_reachable(c);
 	}else{
-		b.set_reachable_by_knight_at(c);
+		b.set_reachables_by_knight_at(c);
 		var r = b.get_reachables();
 		map(function(x){return helper(x,n-1,b);},r);
 	}
